@@ -28,7 +28,6 @@ pub trait ThresholdMin: Sized + Send + TryStream<Ok = (Self::K, u64), Error: Sen
                 {
                     assert_eq!(heap.pop().unwrap().1, v);
                     total -= v;
-                    println!("total: {total}");
                 }
             }
             for (k, _) in heap {
