@@ -1,7 +1,7 @@
 use std::{collections::BinaryHeap, pin::pin};
 
 use futures_util::{Stream, TryStream, TryStreamExt};
-use genawaiter_try::to_try_stream;
+use genawaiter_try_stream::try_stream;
 
 pub trait ThresholdMin: Sized + Send + TryStream<Ok = (Self::K, u64), Error: Send> {
     type K: Send + Ord;
@@ -11,7 +11,7 @@ pub trait ThresholdMin: Sized + Send + TryStream<Ok = (Self::K, u64), Error: Sen
         min_discard: impl Send + Sync + PartialOrd<Self::K>,
         threshold: u64,
     ) -> impl Send + Stream<Item = Result<Self::K, Self::Error>> {
-        to_try_stream(async move |co| {
+        try_stream(async move |co| {
             let mut items = pin!(self.into_stream());
             let mut heap = BinaryHeap::new();
             let mut total = 0;
